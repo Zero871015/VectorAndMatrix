@@ -12,4 +12,4 @@ public:
 	Exceptions(int);
 };
 
- enum error { dimension, divideZero, rowNotEqualCol, noInverse, readError, totalError };
+ enum error { dimension, divideZero, rowNotEqualCol, noInverse, readError, done, computeError, totalError };

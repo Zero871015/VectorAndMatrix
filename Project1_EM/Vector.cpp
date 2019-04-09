@@ -148,7 +148,7 @@ MyVector triangle(MyVector a, MyVector b)
 
 bool parallel(MyVector a, MyVector b)
 {
-	if (dot(a, b)[0] == 1 || dot(a, b)[0] - 1)
+	if (dot(a, b)[0] == 1 || dot(a, b)[0] == -1)
 	{
 		return true;
 	}

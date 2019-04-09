@@ -4,6 +4,9 @@
 #include "Matrix.h"
 #include "Exception.h"
 #include <string>
+#include "Compute.h"
+#include <map>
+
 namespace Project1EM {
 
 	using namespace System;
@@ -14,8 +17,8 @@ namespace Project1EM {
 	using namespace System::Drawing;
 	using namespace System::IO;
 	
-	std::vector<MyVector> vectors;
-	std::vector<MyMatrix> matrices;
+	std::map<std::string, MyVector> vectors;
+	std::map<std::string, MyMatrix> matrices;
 	/// <summary>
 	/// MyForm ªººK­n
 	/// </summary>
@@ -185,7 +188,10 @@ private: System::Void openFileDialog1_FileOk(System::Object^  sender, System::Co
 					//std::cout << double::Parse(temp[index]) << " ";
 					v.data.push_back(double::Parse(temp[index++]));
 				}
-				vectors.push_back(v);
+				std::string s = "V";
+				s += std::to_string(vectors.size() + 1);
+				vectors[s] = v;
+
 				String ^str = gcnew String("");
 				str = "V" + vectors.size() + " size:" + v.dimension();
 				//std::cout << std::endl;
@@ -210,7 +216,10 @@ private: System::Void openFileDialog1_FileOk(System::Object^  sender, System::Co
 				String ^str = gcnew String("");
 				str = "M" + matrices.size() + " size:" + m.row() + "*" + m.col();
 				listBox1->Items->Add(str);
-				matrices.push_back(m);
+
+				std::string s = "M";
+				s += std::to_string(matrices.size() + 1);
+				matrices[s] = m;
 			}
 		}
 	}
@@ -234,26 +243,39 @@ private: System::Void button2_Click(System::Object^  sender, System::EventArgs^ 
 	
 	try
 	{
-		std::cout << dot(vectors[0], vectors[1]);
-		//std::cout << mul(matrices[0], matrices[1]) << std::endl;
-		//std::cout << Inverse(matrices[3]) << std::endl;
-		//std::cout << Inverse(matrices[1]) << std::endl;
-		//std::cout << Inverse(matrices[2]) << std::endl;
+		//convert C# String to c++ std::string.
+		using System::Runtime::InteropServices::Marshal;
+		System::IntPtr pointer = Marshal::StringToHGlobalAnsi(textBox1->Text);
+		char* charPointer = reinterpret_cast<char*>(pointer.ToPointer());
+		std::string returnString(charPointer, textBox1->Text->Length);
+		Marshal::FreeHGlobal(pointer);
+		
+		std::cout << Compute(returnString, vectors, matrices) << std::endl;
 	}
 	catch (Exceptions e)
 	{
 		switch (e.getType())
 		{
 		case error::dimension:
-			std::cout << "Dimension not equal!" << std::endl;
+			std::cout << "Dimension not equal!" << std::endl; 
+			break;
 		case error::divideZero:
 			std::cout << "Divide 0!" << std::endl;
+			break;
 		case error::rowNotEqualCol:
 			std::cout << "Row is not equal col." << std::endl;
+			break;
 		case error::noInverse:
 			std::cout << "No inverse." << std::endl;
+			break;
+		case error::done:
+			break;
+		case error::computeError:
+			std::cout << "Compute error." << std::endl;
+			break;
 		default:
 			std::cout << "wrong";
+			break;
 		}
 	}
 	catch (...)
