@@ -1,12 +1,13 @@
 #include "Compute.h"
 #include "Exception.h"
 
-MyVector Compute(std::string s, std::map<std::string, MyVector> vectors, std::map<std::string, MyMatrix> matrices)
+MyMatrix Compute(std::string s, std::map<std::string, MyVector> vectors, std::map<std::string, MyMatrix> matrices)
 {
-	std::cout << Postorder(s) << std::endl;
+	//std::cout << Postorder(s) << std::endl;
 	s = Postorder(s);
 
-	std::vector<MyVector> stackNumber;	//一個stack用於存放運算元
+	std::vector<MyMatrix> stackMatrix;
+	std::vector<MyVector> stackVector;	//一個stack用於存放運算元
 	std::string temp = "";	//一個暫存空間
 	for (int i = 0; i < (int)s.length(); i++)
 	{
@@ -16,67 +17,137 @@ MyVector Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 			//判斷其是否為運算子
 			if ((int)temp.length() == 1 && (isOperator(temp[0]) || temp == "@"))
 			{
-				int size = (int)stackNumber.size();
-				//從堆疊拿出兩個數做加法
-				if (temp == "+")
+				int size = (int)stackVector.size();
+				//矩陣部分
+				if(size==0)
 				{
-					if (size < 2)
+					size = (int)stackMatrix.size();
+					//從堆疊拿出兩個數做加法
+					if (temp == "+")
+					{
+						if (size < 2)
+						{
+							//錯誤，運算式有錯誤
+							throw Exceptions(computeError);
+						}
+						stackMatrix[size - 2] = add(stackMatrix[size - 2], stackMatrix[size - 1]);
+						stackMatrix.pop_back();
+						size--;
+					}
+					//從堆疊拿出兩個數做減法
+					else if (temp == "-")
+					{
+						if (size < 2)
+						{
+							//錯誤，運算式有錯誤
+							throw Exceptions(computeError);
+						}
+						stackMatrix[size - 2] = sub(stackMatrix[size - 2], stackMatrix[size - 1]);
+						stackMatrix.pop_back();
+						size--;
+					}
+					//從堆疊拿出兩個數做乘法
+					else if (temp == "*")
+					{
+						if (size < 2)
+						{
+							//錯誤，運算式有錯誤
+							throw Exceptions(computeError);
+						}
+						stackMatrix[size - 2] = mul(stackMatrix[size - 2], stackMatrix[size - 1]);
+						stackMatrix.pop_back();
+						size--;
+					}
+					//從堆疊拿出兩個數做除法
+					else if (temp == "/")
 					{
 						//錯誤，運算式有錯誤
 						throw Exceptions(computeError);
 					}
-					stackNumber[size - 2] = add(stackNumber[size - 2], stackNumber[size - 1]);
-					stackNumber.pop_back();
-					size--;
-				}
-				//從堆疊拿出兩個數做減法
-				else if (temp == "-")
-				{
-					if (size < 2)
+					//從堆疊拿出一個數加負號
+					else if (temp == "@")
 					{
 						//錯誤，運算式有錯誤
 						throw Exceptions(computeError);
 					}
-					stackNumber[size - 2] = sub(stackNumber[size - 2], stackNumber[size - 1]);
-					stackNumber.pop_back();
-					size--;
-				}
-				//從堆疊拿出兩個數做乘法
-				else if (temp == "*")
-				{
-					if (size < 2)
+					//從堆疊拿出兩個數做次方
+					else if (temp == "^")
 					{
 						//錯誤，運算式有錯誤
 						throw Exceptions(computeError);
 					}
-					stackNumber[size - 2] = dot(stackNumber[size - 2], stackNumber[size - 1]);
-					stackNumber.pop_back();
-					size--;
+					//從堆疊拿出一個數做階層
+					else if (temp == "!")
+					{
+						//錯誤，運算式有錯誤
+						throw Exceptions(computeError);
+					}
 				}
-				//從堆疊拿出兩個數做除法
-				else if (temp == "/")
+				else
 				{
-					//錯誤，運算式有錯誤
-					throw Exceptions(computeError);
+					//向量部分
+					//從堆疊拿出兩個數做加法
+					if (temp == "+")
+					{
+						if (size < 2)
+						{
+							//錯誤，運算式有錯誤
+							throw Exceptions(computeError);
+						}
+						stackVector[size - 2] = add(stackVector[size - 2], stackVector[size - 1]);
+						stackVector.pop_back();
+						size--;
+					}
+					//從堆疊拿出兩個數做減法
+					else if (temp == "-")
+					{
+						if (size < 2)
+						{
+							//錯誤，運算式有錯誤
+							throw Exceptions(computeError);
+						}
+						stackVector[size - 2] = sub(stackVector[size - 2], stackVector[size - 1]);
+						stackVector.pop_back();
+						size--;
+					}
+					//從堆疊拿出兩個數做乘法
+					else if (temp == "*")
+					{
+						if (size < 2)
+						{
+							//錯誤，運算式有錯誤
+							throw Exceptions(computeError);
+						}
+						stackVector[size - 2] = dot(stackVector[size - 2], stackVector[size - 1]);
+						stackVector.pop_back();
+						size--;
+					}
+					//從堆疊拿出兩個數做除法
+					else if (temp == "/")
+					{
+						//錯誤，運算式有錯誤
+						throw Exceptions(computeError);
+					}
+					//從堆疊拿出一個數加負號
+					else if (temp == "@")
+					{
+						//錯誤，運算式有錯誤
+						throw Exceptions(computeError);
+					}
+					//從堆疊拿出兩個數做次方
+					else if (temp == "^")
+					{
+						//錯誤，運算式有錯誤
+						throw Exceptions(computeError);
+					}
+					//從堆疊拿出一個數做階層
+					else if (temp == "!")
+					{
+						//錯誤，運算式有錯誤
+						throw Exceptions(computeError);
+					}
 				}
-				//從堆疊拿出一個數加負號
-				else if (temp == "@")
-				{
-					//錯誤，運算式有錯誤
-					throw Exceptions(computeError);
-				}
-				//從堆疊拿出兩個數做次方
-				else if (temp == "^")
-				{
-					//錯誤，運算式有錯誤
-					throw Exceptions(computeError);
-				}
-				//從堆疊拿出一個數做階層
-				else if (temp == "!")
-				{
-					//錯誤，運算式有錯誤
-					throw Exceptions(computeError);
-				}
+				
 			}
 			//不是運算符號，代表其為運算元
 			//將此數放入堆疊中
@@ -86,68 +157,68 @@ MyVector Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 				//特殊指令
 				if (temp[0] == '\\')
 				{
-					int size = (int)stackNumber.size();
+					int size = (int)stackVector.size();
 
 					if (cmdCheck(temp, "length"))
 					{
-						stackNumber.push_back(Compute(subOrder(temp), vectors, matrices));
-						size = (int)stackNumber.size();
-						stackNumber[size - 1] = length(stackNumber[size - 1]);
+						stackVector.push_back(Compute(subOrder(temp), vectors, matrices)[0]);
+						size = (int)stackVector.size();
+						stackVector[size - 1] = length(stackVector[size - 1]);
 					}
 					else if (cmdCheck(temp, "normalize"))
 					{
-						stackNumber.push_back(Compute(subOrder(temp), vectors, matrices));
-						size = (int)stackNumber.size();
-						stackNumber[size - 1] = length(stackNumber[size - 1]);
+						stackVector.push_back(Compute(subOrder(temp), vectors, matrices)[0]);
+						size = (int)stackVector.size();
+						stackVector[size - 1] = length(stackVector[size - 1]);
 					}
 					else if (cmdCheck(temp, "cross"))
 					{
 						std::string a = "", b = "";
 						subTwoOrder(temp, a, b);
-						stackNumber.push_back(Compute(a, vectors, matrices));
-						stackNumber.push_back(Compute(b, vectors, matrices));
-						size = (int)stackNumber.size();
-						stackNumber[size - 2] = cross(stackNumber[size - 2], stackNumber[size - 1]);
-						stackNumber.pop_back();
+						stackVector.push_back(Compute(a, vectors, matrices)[0]);
+						stackVector.push_back(Compute(b, vectors, matrices)[0]);
+						size = (int)stackVector.size();
+						stackVector[size - 2] = cross(stackVector[size - 2], stackVector[size - 1]);
+						stackVector.pop_back();
 					}
 					else if (cmdCheck(temp, "component"))
 					{
 						std::string a = "", b = "";
 						subTwoOrder(temp, a, b);
-						stackNumber.push_back(Compute(a, vectors, matrices));
-						stackNumber.push_back(Compute(b, vectors, matrices));
-						size = (int)stackNumber.size();
-						stackNumber[size - 2] = component(stackNumber[size - 2], stackNumber[size - 1]);
-						stackNumber.pop_back();
+						stackVector.push_back(Compute(a, vectors, matrices)[0]);
+						stackVector.push_back(Compute(b, vectors, matrices)[0]);
+						size = (int)stackVector.size();
+						stackVector[size - 2] = component(stackVector[size - 2], stackVector[size - 1]);
+						stackVector.pop_back();
 					}
 					else if (cmdCheck(temp, "projection"))
 					{
 						std::string a = "", b = "";
 						subTwoOrder(temp, a, b);
-						stackNumber.push_back(Compute(a, vectors, matrices));
-						stackNumber.push_back(Compute(b, vectors, matrices));
-						size = (int)stackNumber.size();
-						stackNumber[size - 2] = projection(stackNumber[size - 2], stackNumber[size - 1]);
-						stackNumber.pop_back();
+						stackVector.push_back(Compute(a, vectors, matrices)[0]);
+						stackVector.push_back(Compute(b, vectors, matrices)[0]);
+						size = (int)stackVector.size();
+						stackVector[size - 2] = projection(stackVector[size - 2], stackVector[size - 1]);
+						stackVector.pop_back();
 					}
 					else if (cmdCheck(temp, "triangle"))
 					{
 						std::string a = "", b = "";
 						subTwoOrder(temp, a, b);
-						stackNumber.push_back(Compute(a, vectors, matrices));
-						stackNumber.push_back(Compute(b, vectors, matrices));
-						size = (int)stackNumber.size();
-						stackNumber[size - 2] = triangle(stackNumber[size - 2], stackNumber[size - 1]);
-						stackNumber.pop_back();
+						stackVector.push_back(Compute(a, vectors, matrices)[0]);
+						stackVector.push_back(Compute(b, vectors, matrices)[0]);
+						size = (int)stackVector.size();
+						stackVector[size - 2] = triangle(stackVector[size - 2], stackVector[size - 1]);
+						stackVector.pop_back();
 					}
 					else if (cmdCheck(temp, "parallel"))
 					{
 						std::string a = "", b = "";
 						subTwoOrder(temp, a, b);
-						stackNumber.push_back(Compute(a, vectors, matrices));
-						stackNumber.push_back(Compute(b, vectors, matrices));
-						size = (int)stackNumber.size();
-						if (parallel(stackNumber[size - 2], stackNumber[size - 1]))
+						stackVector.push_back(Compute(a, vectors, matrices)[0]);
+						stackVector.push_back(Compute(b, vectors, matrices)[0]);
+						size = (int)stackVector.size();
+						if (parallel(stackVector[size - 2], stackVector[size - 1]))
 							std::cout << "yes" << std::endl;
 						else
 							std::cout << "no" << std::endl;
@@ -157,10 +228,10 @@ MyVector Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 					{
 						std::string a = "", b = "";
 						subTwoOrder(temp, a, b);
-						stackNumber.push_back(Compute(a, vectors, matrices));
-						stackNumber.push_back(Compute(b, vectors, matrices));
-						size = (int)stackNumber.size();
-						if (orthogonal(stackNumber[size - 2], stackNumber[size - 1]))
+						stackVector.push_back(Compute(a, vectors, matrices)[0]);
+						stackVector.push_back(Compute(b, vectors, matrices)[0]);
+						size = (int)stackVector.size();
+						if (orthogonal(stackVector[size - 2], stackVector[size - 1]))
 							std::cout << "yes" << std::endl;
 						else
 							std::cout << "no" << std::endl;
@@ -170,30 +241,30 @@ MyVector Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 					{
 						std::string a = "", b = "";
 						subTwoOrder(temp, a, b);
-						stackNumber.push_back(Compute(a, vectors, matrices));
-						stackNumber.push_back(Compute(b, vectors, matrices));
-						size = (int)stackNumber.size();
-						stackNumber[size - 2] = findAngle(stackNumber[size - 2], stackNumber[size - 1]);
-						stackNumber.pop_back();
+						stackVector.push_back(Compute(a, vectors, matrices)[0]);
+						stackVector.push_back(Compute(b, vectors, matrices)[0]);
+						size = (int)stackVector.size();
+						stackVector[size - 2] = findAngle(stackVector[size - 2], stackVector[size - 1]);
+						stackVector.pop_back();
 					}
 					else if (cmdCheck(temp, "planeNormal"))
 					{
 						std::string a = "", b = "";
 						subTwoOrder(temp, a, b);
-						stackNumber.push_back(Compute(a, vectors, matrices));
-						stackNumber.push_back(Compute(b, vectors, matrices));
-						size = (int)stackNumber.size();
-						stackNumber[size - 2] = planeNormal(stackNumber[size - 2], stackNumber[size - 1]);
-						stackNumber.pop_back();
+						stackVector.push_back(Compute(a, vectors, matrices)[0]);
+						stackVector.push_back(Compute(b, vectors, matrices)[0]);
+						size = (int)stackVector.size();
+						stackVector[size - 2] = planeNormal(stackVector[size - 2], stackVector[size - 1]);
+						stackVector.pop_back();
 					}
 					else if (cmdCheck(temp, "linearIndependent"))
 					{
 						std::string a = "", b = "";
 						subTwoOrder(temp, a, b);
-						stackNumber.push_back(Compute(a, vectors, matrices));
-						stackNumber.push_back(Compute(b, vectors, matrices));
-						size = (int)stackNumber.size();
-						if (linearIndependent(stackNumber[size - 2], stackNumber[size - 1]))
+						stackVector.push_back(Compute(a, vectors, matrices)[0]);
+						stackVector.push_back(Compute(b, vectors, matrices)[0]);
+						size = (int)stackVector.size();
+						if (linearIndependent(stackVector[size - 2], stackVector[size - 1]))
 							std::cout << "yes" << std::endl;
 						else
 							std::cout << "no" << std::endl;
@@ -201,25 +272,94 @@ MyVector Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 					}
 					else if (cmdCheck(temp, "gramSchmidt"))
 					{
-					std::vector<std::string> strs;
-					std::vector<MyVector> vecs;
-					strs = subMultiOrder(temp);
-					for (int j = 0; j < (int)strs.size(); j++)
-					{
-						vecs.push_back(Compute(strs[j],vectors,matrices));
+						std::vector<std::string> strs;
+						std::vector<MyVector> vecs;
+						strs = subMultiOrder(temp);
+						for (int j = 0; j < (int)strs.size(); j++)
+						{
+							vecs.push_back(Compute(strs[j],vectors,matrices)[0]);
+						}
+						vecs = gramSchmidt(vecs);
+						for (int j = 0; j < (int)strs.size(); j++)
+						{
+							std::cout << vecs[j] << std::endl;
+						}
+						throw Exceptions(done);
 					}
-					vecs = gramSchmidt(vecs);
-					for (int j = 0; j < (int)strs.size(); j++)
+					//矩陣部分
+					else if (cmdCheck(temp, "rank"))
 					{
-						std::cout << vecs[j] << std::endl;
+						stackMatrix.push_back(Compute(subOrder(temp), vectors, matrices));
+						size = (int)stackMatrix.size();
+						std::cout << rank(stackMatrix[size - 1]) << std::endl;
+						throw Exceptions(done);
 					}
-					throw Exceptions(done);
+					else if (cmdCheck(temp, "transpose"))
+					{
+						stackMatrix.push_back(Compute(subOrder(temp), vectors, matrices));
+						size = (int)stackMatrix.size();
+						stackMatrix[size - 1] = transpose(stackMatrix[size - 1]);
+					}
+					else if (cmdCheck(temp, "linearSystem"))
+					{
+						std::string a = "", b = "";
+						subTwoOrder(temp, a, b);
+						stackMatrix.push_back(Compute(a, vectors, matrices));
+						stackMatrix.push_back(Compute(b, vectors, matrices));
+						size = (int)stackMatrix.size();
+						stackMatrix[size - 2] = SolveLinearSystem(stackMatrix[size - 2], stackMatrix[size - 1]);
+						stackMatrix.pop_back();
+					}
+					else if (cmdCheck(temp, "determinants"))
+					{
+						stackMatrix.push_back(Compute(subOrder(temp), vectors, matrices));
+						size = (int)stackMatrix.size();
+						std::cout << Determinants(stackMatrix[size - 1]) << std::endl;
+						throw Exceptions(done);
+					}
+					else if (cmdCheck(temp, "inverse"))
+					{
+						stackMatrix.push_back(Compute(subOrder(temp), vectors, matrices));
+						size = (int)stackMatrix.size();
+						stackMatrix[size - 1] = Inverse(stackMatrix[size - 1]);
+					}
+					else if (cmdCheck(temp, "adjoint"))
+					{
+						stackMatrix.push_back(Compute(subOrder(temp), vectors, matrices));
+						size = (int)stackMatrix.size();
+						stackMatrix[size - 1] = Adjoint(stackMatrix[size - 1]);
+					}
+					else if (cmdCheck(temp, "leastSquare"))
+					{
+						std::string a = "", b = "";
+						subTwoOrder(temp, a, b);
+						stackMatrix.push_back(Compute(a, vectors, matrices));
+						stackMatrix.push_back(Compute(b, vectors, matrices));
+						size = (int)stackMatrix.size();
+						stackMatrix[size - 2] = LeastSquare(stackMatrix[size - 2], stackMatrix[size - 1]);
+						stackMatrix.pop_back();
+					}
+					else if (cmdCheck(temp, "powerMethod"))
+					{
+						stackMatrix.push_back(Compute(subOrder(temp), vectors, matrices));
+						size = (int)stackMatrix.size();
+						MyMatrix v, d;
+						PowerMethod(stackMatrix[size - 1], v, d);
+						std::cout << "v = " << std::endl;
+						std::cout << v << std::endl;
+						std::cout << "d = " << std::endl;
+						std::cout << d << std::endl;
+						throw Exceptions(done);
 					}
 				}
 				//變數
 				if (vectors.find(temp)!=vectors.end())
 				{
-					stackNumber.push_back(vectors[temp]);
+					stackVector.push_back(vectors[temp]);
+				}
+				else if (matrices.find(temp) != matrices.end())
+				{
+					stackMatrix.push_back(matrices[temp]);
 				}
 			}
 			temp = "";
@@ -230,7 +370,12 @@ MyVector Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 			temp += s[i];
 		}
 	}
-	return stackNumber[0];
+	if (stackVector.size() != 0)
+		return stackVector[0];
+	else if (stackMatrix.size() != 0)
+		return stackMatrix[0];
+	else
+		throw Exceptions(computeError);
 }
 
 //中序轉後序的輸入運算子優先度

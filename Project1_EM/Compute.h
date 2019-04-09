@@ -5,7 +5,7 @@
 #include "Vector.h"
 #include "Matrix.h"
 
-MyVector Compute(std::string s,std::map<std::string,MyVector>, std::map<std::string, MyMatrix>);
+MyMatrix Compute(std::string s,std::map<std::string,MyVector>, std::map<std::string, MyMatrix>);
 
 int operatorPriorityInInput(char c);
 

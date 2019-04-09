@@ -7,6 +7,7 @@ class MyMatrix
 {
 public:
 	MyMatrix();
+	MyMatrix(MyVector);
 	int col();
 	int row();
 	MyVector &operator[](int index);

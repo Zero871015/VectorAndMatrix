@@ -6,6 +6,13 @@ MyMatrix::MyMatrix()
 {
 }
 
+MyMatrix::MyMatrix(MyVector v)
+{
+	MyMatrix m;
+	m.data.push_back(v);
+	*this = m;
+}
+
 int MyMatrix::row()
 {
 	return this->data.size();
@@ -328,8 +335,9 @@ void FindEigen(MyMatrix m, MyMatrix& eigenVector, MyMatrix& eigenValue)
 	}
 }
 
-void PowerMethod(MyMatrix m, MyMatrix& eigenVector, MyMatrix& eigenValue)
+void PowerMethod(MyMatrix m, MyMatrix& eigenVector, MyMatrix& eigenValue)	//Error when number too large
 {
+	MyVector v;
 	if (m.col() != m.row())
 	{
 		throw Exceptions(dimension);
@@ -350,15 +358,18 @@ void PowerMethod(MyMatrix m, MyMatrix& eigenVector, MyMatrix& eigenValue)
 		error = guess[1][0] / guess[0][0] - newGuess[1][0] / newGuess[0][0];
 		guess = newGuess;
 	} while (abs(error) > ZERO);
-
+	v.data.push_back(1);
 	for (int i = 1; i < guess.row(); i++)
 	{
 		guess[i][0] /= guess[0][0];
+		v.data.push_back(guess[i][0]);
 	}
 	guess[0][0] = 1;
+
+	v = normalize(v);
 
 	eigenVector = mul(transpose(mul(m, guess)), guess);
 	eigenValue = mul(transpose(guess), guess);
 	eigenValue[0][0] = eigenVector[0][0] / eigenValue[0][0];
-	eigenVector = guess;
+	eigenVector = v;
 }

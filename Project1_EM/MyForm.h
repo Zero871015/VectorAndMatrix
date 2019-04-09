@@ -213,13 +213,14 @@ private: System::Void openFileDialog1_FileOk(System::Object^  sender, System::Co
 					}
 					m.data.push_back(v);
 				}
-				String ^str = gcnew String("");
-				str = "M" + matrices.size() + " size:" + m.row() + "*" + m.col();
-				listBox1->Items->Add(str);
 
 				std::string s = "M";
 				s += std::to_string(matrices.size() + 1);
 				matrices[s] = m;
+
+				String ^str = gcnew String("");
+				str = "M" + matrices.size() + " size:" + m.row() + "*" + m.col();
+				listBox1->Items->Add(str);
 			}
 		}
 	}
