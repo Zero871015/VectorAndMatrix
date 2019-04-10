@@ -265,15 +265,31 @@ MyMatrix subMatrix(MyMatrix m, int c, int r)
 MyMatrix Adjoint(MyMatrix m)
 {
 	MyMatrix adj;
-	for (int i = 0; i < m.row(); i++)
+	double d = Determinants(m);
+	if (d == 0)
 	{
-		MyVector v;
-		for (int j = 0; j < m.col(); j++)
+		for (int i = 0; i < m.row(); i++)
 		{
-			v.data.push_back(pow(-1, j + i) * Determinants(subMatrix(m, j, i)));
+			MyVector v;
+			for (int j = 0; j < m.col(); j++)
+			{
+				v.data.push_back(pow(-1, j + i) * Determinants(subMatrix(m, j, i)));
+			}
+			adj.data.push_back(v);
 		}
-		adj.data.push_back(v);
 	}
+	else
+	{
+		adj = Inverse(m);
+		for (int i = 0; i < adj.row(); i++)
+		{
+			for (int j = 0; j < adj.col(); j++)
+			{
+				adj[i][j] *= d;
+			}
+		}
+	}
+	
 	return adj;
 }
 
@@ -287,6 +303,7 @@ MyMatrix Inverse(MyMatrix m)	//some error number and TLE when size too large
 	}
 	else
 	{
+		/*
 		inv = Adjoint(m);
 		d = 1 / d;
 		for (int i = 0; i < inv.row(); i++)
@@ -296,16 +313,98 @@ MyMatrix Inverse(MyMatrix m)	//some error number and TLE when size too large
 				inv[i][j] *= d;
 			}
 		}
+		*/
+
+		//Identity matrix
+		inv = m;
+		for (int i = 0; i < inv.row(); i++)
+		{
+			for (int j = 0; j < inv.col(); j++)
+			{
+				inv[i][j] = (i == j) ? 1 : 0;
+			}
+		}
+
+		//GaussianElimination
+		MyVector v;
+		for (int i = 0; i < m.row(); i++)
+		{
+			int temp = i;
+			while (temp < m.row() && abs(m[temp][i]) < ZERO)temp++;
+
+			if (temp == m.row())break;
+
+			v = m[i];
+			m[i] = m[temp];
+			m[temp] = v;
+
+			v = inv[i];
+			inv[i] = inv[temp];
+			inv[temp] = v;
+
+			for (int j = i + 1; j < m.row(); j++)
+			{
+				double radio = m[j][i] / m[i][i];
+				for (int k = 0; k < m.col(); k++)
+				{
+					m[j][k] -= m[i][k] * radio;
+					inv[j][k] -= inv[i][k] * radio;
+				}
+			}
+
+		}
+
+		for (int i = 0; i < m.row(); i++)
+		{
+			double radio = m[i][i];
+			for (int j = 0; j < m.col(); j++)
+			{
+				m[i][j] /= radio;
+				inv[i][j] /= radio;
+			}
+		}
+
+		for (int i = m.row() - 1; i >= 0; i--)
+		{
+			for (int j = i - 1; j >= 0; j--)
+			{
+				double radio = m[j][i];
+				MyVector v = inv[i];
+				for (int k = 0; k < v.dimension(); k++)
+				{
+					v[k] *= radio;
+				}
+				inv[j] = sub(inv[j], v);
+			}
+		}
 	}
 	return inv;
 }
 
-MyMatrix SolveLinearSystem(MyMatrix a, MyMatrix b)	//TLE when size too large.
+MyMatrix SolveLinearSystem(MyMatrix a, MyMatrix b)
 {
 	if (a.row() != b.row() || b.col() != 1)
 	{
 		throw Exceptions(dimension);
 	}
+	MyMatrix AugmentedMatrix = a;
+	for (int i = 0; i < a.row(); i++)
+	{
+		AugmentedMatrix[i].data.push_back(b[i][0]);
+	}
+	if (rank(AugmentedMatrix) != rank(a))
+	{
+		//inconsistent
+		std::cout << "Inconsistent." << std::endl;
+		throw Exceptions(done);
+	}
+	else if (rank(a) < a.row())
+	{
+		//infinity
+		std::cout << "Infinity of solutions." << std::endl;
+		throw Exceptions(done);
+	}
+
 
 	MyMatrix inv = Inverse(a);
 	MyMatrix ans = mul(inv,b);
@@ -354,6 +453,11 @@ void PowerMethod(MyMatrix m, MyMatrix& eigenVector, MyMatrix& eigenValue)	//Erro
 	do
 	{
 		MyMatrix newGuess = mul(m, guess);
+		
+		for (int i = newGuess.row() - 1; i >= 0; i--)
+		{
+			newGuess[i][0] /= newGuess[0][0];
+		}
 
 		error = guess[1][0] / guess[0][0] - newGuess[1][0] / newGuess[0][0];
 		guess = newGuess;

@@ -74,20 +74,18 @@ namespace Project1EM {
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->listBox1 = (gcnew System::Windows::Forms::ListBox());
-			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->tableLayoutPanel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// tableLayoutPanel1
 			// 
-			this->tableLayoutPanel1->ColumnCount = 3;
+			this->tableLayoutPanel1->ColumnCount = 2;
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				22.08092F)));
+				21.93699F)));
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
-				77.91908F)));
-			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Absolute,
-				15)));
+				78.06301F)));
 			this->tableLayoutPanel1->Controls->Add(this->button1, 0, 1);
 			this->tableLayoutPanel1->Controls->Add(this->button2, 1, 1);
 			this->tableLayoutPanel1->Controls->Add(this->listBox1, 0, 0);
@@ -103,47 +101,56 @@ namespace Project1EM {
 			// 
 			// button1
 			// 
+			this->button1->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->button1->Font = (gcnew System::Drawing::Font(L"新細明體", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(136)));
 			this->button1->Location = System::Drawing::Point(3, 465);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(107, 40);
+			this->button1->Size = System::Drawing::Size(185, 40);
 			this->button1->TabIndex = 0;
-			this->button1->Text = L"read";
+			this->button1->Text = L"Read";
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MyForm::button1_Click);
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(192, 465);
+			this->button2->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->button2->Font = (gcnew System::Drawing::Font(L"新細明體", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(136)));
+			this->button2->Location = System::Drawing::Point(194, 465);
 			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(107, 40);
+			this->button2->Size = System::Drawing::Size(677, 40);
 			this->button2->TabIndex = 1;
-			this->button2->Text = L"compute";
+			this->button2->Text = L"Compute";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MyForm::button2_Click);
 			// 
 			// listBox1
 			// 
+			this->listBox1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->listBox1->FormattingEnabled = true;
 			this->listBox1->ItemHeight = 15;
 			this->listBox1->Location = System::Drawing::Point(3, 3);
 			this->listBox1->Name = L"listBox1";
-			this->listBox1->Size = System::Drawing::Size(183, 454);
+			this->listBox1->Size = System::Drawing::Size(185, 456);
 			this->listBox1->TabIndex = 4;
+			// 
+			// textBox1
+			// 
+			this->textBox1->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->textBox1->Font = (gcnew System::Drawing::Font(L"新細明體", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(136)));
+			this->textBox1->Location = System::Drawing::Point(194, 3);
+			this->textBox1->Multiline = true;
+			this->textBox1->Name = L"textBox1";
+			this->textBox1->Size = System::Drawing::Size(677, 456);
+			this->textBox1->TabIndex = 5;
 			// 
 			// openFileDialog1
 			// 
 			this->openFileDialog1->FileName = L"openFileDialog1";
 			this->openFileDialog1->InitialDirectory = L"D:\\Downloads\\Project1_EM\\Project1_EM\\test";
 			this->openFileDialog1->FileOk += gcnew System::ComponentModel::CancelEventHandler(this, &MyForm::openFileDialog1_FileOk);
-			// 
-			// textBox1
-			// 
-			this->textBox1->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->textBox1->Location = System::Drawing::Point(192, 3);
-			this->textBox1->Multiline = true;
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(663, 456);
-			this->textBox1->TabIndex = 5;
 			// 
 			// MyForm
 			// 
