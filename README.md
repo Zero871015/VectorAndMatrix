@@ -23,4 +23,4 @@
 * \inverse()
 * \adjoint()
 * \leastSquare(,)
-* \powerMethod(,) //Error
+* \powerMethod(,)
