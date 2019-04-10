@@ -7,154 +7,154 @@ MyMatrix Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 	s = Postorder(s);
 
 	std::vector<MyMatrix> stackMatrix;
-	std::vector<MyVector> stackVector;	//¤@­Óstack¥Î©ó¦s©ñ¹Bºâ¤¸
-	std::string temp = "";	//¤@­Ó¼È¦sªÅ¶¡
+	std::vector<MyVector> stackVector;	//ä¸€å€‹stackç”¨æ–¼å­˜æ”¾é‹ç®—å…ƒ
+	std::string temp = "";	//ä¸€å€‹æš«å­˜ç©ºé–“
 	for (int i = 0; i < (int)s.length(); i++)
 	{
-		//°²¦p¹J¤W¤À¹j¦r¤¸...
+		//å‡å¦‚é‡ä¸Šåˆ†éš”å­—å…ƒ...
 		if (s[i] == ' ')
 		{
-			//§PÂ_¨ä¬O§_¬°¹Bºâ¤l
+			//åˆ¤æ–·å…¶æ˜¯å¦ç‚ºé‹ç®—å­
 			if ((int)temp.length() == 1 && (isOperator(temp[0]) || temp == "@"))
 			{
 				int size = (int)stackVector.size();
-				//¯x°}³¡¤À
+				//çŸ©é™£éƒ¨åˆ†
 				if(size==0)
 				{
 					size = (int)stackMatrix.size();
-					//±q°ïÅ|®³¥X¨â­Ó¼Æ°µ¥[ªk
+					//å¾å †ç–Šæ‹¿å‡ºå…©å€‹æ•¸åšåŠ æ³•
 					if (temp == "+")
 					{
 						if (size < 2)
 						{
-							//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+							//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 							throw Exceptions(computeError);
 						}
 						stackMatrix[size - 2] = add(stackMatrix[size - 2], stackMatrix[size - 1]);
 						stackMatrix.pop_back();
 						size--;
 					}
-					//±q°ïÅ|®³¥X¨â­Ó¼Æ°µ´îªk
+					//å¾å †ç–Šæ‹¿å‡ºå…©å€‹æ•¸åšæ¸›æ³•
 					else if (temp == "-")
 					{
 						if (size < 2)
 						{
-							//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+							//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 							throw Exceptions(computeError);
 						}
 						stackMatrix[size - 2] = sub(stackMatrix[size - 2], stackMatrix[size - 1]);
 						stackMatrix.pop_back();
 						size--;
 					}
-					//±q°ïÅ|®³¥X¨â­Ó¼Æ°µ­¼ªk
+					//å¾å †ç–Šæ‹¿å‡ºå…©å€‹æ•¸åšä¹˜æ³•
 					else if (temp == "*")
 					{
 						if (size < 2)
 						{
-							//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+							//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 							throw Exceptions(computeError);
 						}
 						stackMatrix[size - 2] = mul(stackMatrix[size - 2], stackMatrix[size - 1]);
 						stackMatrix.pop_back();
 						size--;
 					}
-					//±q°ïÅ|®³¥X¨â­Ó¼Æ°µ°£ªk
+					//å¾å †ç–Šæ‹¿å‡ºå…©å€‹æ•¸åšé™¤æ³•
 					else if (temp == "/")
 					{
-						//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+						//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 						throw Exceptions(computeError);
 					}
-					//±q°ïÅ|®³¥X¤@­Ó¼Æ¥[­t¸¹
+					//å¾å †ç–Šæ‹¿å‡ºä¸€å€‹æ•¸åŠ è² è™Ÿ
 					else if (temp == "@")
 					{
-						//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+						//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 						throw Exceptions(computeError);
 					}
-					//±q°ïÅ|®³¥X¨â­Ó¼Æ°µ¦¸¤è
+					//å¾å †ç–Šæ‹¿å‡ºå…©å€‹æ•¸åšæ¬¡æ–¹
 					else if (temp == "^")
 					{
-						//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+						//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 						throw Exceptions(computeError);
 					}
-					//±q°ïÅ|®³¥X¤@­Ó¼Æ°µ¶¥¼h
+					//å¾å †ç–Šæ‹¿å‡ºä¸€å€‹æ•¸åšéšå±¤
 					else if (temp == "!")
 					{
-						//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+						//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 						throw Exceptions(computeError);
 					}
 				}
 				else
 				{
-					//¦V¶q³¡¤À
-					//±q°ïÅ|®³¥X¨â­Ó¼Æ°µ¥[ªk
+					//å‘é‡éƒ¨åˆ†
+					//å¾å †ç–Šæ‹¿å‡ºå…©å€‹æ•¸åšåŠ æ³•
 					if (temp == "+")
 					{
 						if (size < 2)
 						{
-							//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+							//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 							throw Exceptions(computeError);
 						}
 						stackVector[size - 2] = add(stackVector[size - 2], stackVector[size - 1]);
 						stackVector.pop_back();
 						size--;
 					}
-					//±q°ïÅ|®³¥X¨â­Ó¼Æ°µ´îªk
+					//å¾å †ç–Šæ‹¿å‡ºå…©å€‹æ•¸åšæ¸›æ³•
 					else if (temp == "-")
 					{
 						if (size < 2)
 						{
-							//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+							//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 							throw Exceptions(computeError);
 						}
 						stackVector[size - 2] = sub(stackVector[size - 2], stackVector[size - 1]);
 						stackVector.pop_back();
 						size--;
 					}
-					//±q°ïÅ|®³¥X¨â­Ó¼Æ°µ­¼ªk
+					//å¾å †ç–Šæ‹¿å‡ºå…©å€‹æ•¸åšä¹˜æ³•
 					else if (temp == "*")
 					{
 						if (size < 2)
 						{
-							//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+							//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 							throw Exceptions(computeError);
 						}
 						stackVector[size - 2] = dot(stackVector[size - 2], stackVector[size - 1]);
 						stackVector.pop_back();
 						size--;
 					}
-					//±q°ïÅ|®³¥X¨â­Ó¼Æ°µ°£ªk
+					//å¾å †ç–Šæ‹¿å‡ºå…©å€‹æ•¸åšé™¤æ³•
 					else if (temp == "/")
 					{
-						//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+						//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 						throw Exceptions(computeError);
 					}
-					//±q°ïÅ|®³¥X¤@­Ó¼Æ¥[­t¸¹
+					//å¾å †ç–Šæ‹¿å‡ºä¸€å€‹æ•¸åŠ è² è™Ÿ
 					else if (temp == "@")
 					{
-						//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+						//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 						throw Exceptions(computeError);
 					}
-					//±q°ïÅ|®³¥X¨â­Ó¼Æ°µ¦¸¤è
+					//å¾å †ç–Šæ‹¿å‡ºå…©å€‹æ•¸åšæ¬¡æ–¹
 					else if (temp == "^")
 					{
-						//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+						//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 						throw Exceptions(computeError);
 					}
-					//±q°ïÅ|®³¥X¤@­Ó¼Æ°µ¶¥¼h
+					//å¾å †ç–Šæ‹¿å‡ºä¸€å€‹æ•¸åšéšå±¤
 					else if (temp == "!")
 					{
-						//¿ù»~¡A¹Bºâ¦¡¦³¿ù»~
+						//éŒ¯èª¤ï¼Œé‹ç®—å¼æœ‰éŒ¯èª¤
 						throw Exceptions(computeError);
 					}
 				}
 				
 			}
-			//¤£¬O¹Bºâ²Å¸¹¡A¥Nªí¨ä¬°¹Bºâ¤¸
-			//±N¦¹¼Æ©ñ¤J°ïÅ|¤¤
-			//¥ıÀË¬d¬O§_¬°ÅÜ¼Æ
+			//ä¸æ˜¯é‹ç®—ç¬¦è™Ÿï¼Œä»£è¡¨å…¶ç‚ºé‹ç®—å…ƒ
+			//å°‡æ­¤æ•¸æ”¾å…¥å †ç–Šä¸­
+			//å…ˆæª¢æŸ¥æ˜¯å¦ç‚ºè®Šæ•¸
 			else
 			{
-				//¯S®í«ü¥O
+				//ç‰¹æ®ŠæŒ‡ä»¤
 				if (temp[0] == '\\')
 				{
 					int size = (int)stackVector.size();
@@ -169,7 +169,7 @@ MyMatrix Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 					{
 						stackVector.push_back(Compute(subOrder(temp), vectors, matrices)[0]);
 						size = (int)stackVector.size();
-						stackVector[size - 1] = length(stackVector[size - 1]);
+						stackVector[size - 1] = normalize(stackVector[size - 1]);
 					}
 					else if (cmdCheck(temp, "cross"))
 					{
@@ -286,7 +286,7 @@ MyMatrix Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 						}
 						throw Exceptions(done);
 					}
-					//¯x°}³¡¤À
+					//çŸ©é™£éƒ¨åˆ†
 					else if (cmdCheck(temp, "rank"))
 					{
 						stackMatrix.push_back(Compute(subOrder(temp), vectors, matrices));
@@ -352,7 +352,7 @@ MyMatrix Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 						throw Exceptions(done);
 					}
 				}
-				//ÅÜ¼Æ
+				//è®Šæ•¸
 				if (vectors.find(temp)!=vectors.end())
 				{
 					stackVector.push_back(vectors[temp]);
@@ -366,7 +366,7 @@ MyMatrix Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 		}
 		else
 		{
-			//ÁÙ¨S¹J¨ì¤À¹j²Å¸¹¡A¥Nªí¸Ó¦r¤¸»P«e­±¬O¤@Åéªº
+			//é‚„æ²’é‡åˆ°åˆ†éš”ç¬¦è™Ÿï¼Œä»£è¡¨è©²å­—å…ƒèˆ‡å‰é¢æ˜¯ä¸€é«”çš„
 			temp += s[i];
 		}
 	}
@@ -378,7 +378,7 @@ MyMatrix Compute(std::string s, std::map<std::string, MyVector> vectors, std::ma
 		throw Exceptions(computeError);
 }
 
-//¤¤§ÇÂà«á§Çªº¿é¤J¹Bºâ¤lÀu¥ı«×
+//ä¸­åºè½‰å¾Œåºçš„è¼¸å…¥é‹ç®—å­å„ªå…ˆåº¦
 int operatorPriorityInInput(char c)
 {
 	if (c == '+' || c == '-')return 1;
@@ -391,7 +391,7 @@ int operatorPriorityInInput(char c)
 	else return -1;
 }
 
-//¤¤§ÇÂà«á§Çªº°ïÅ|¹Bºâ¤lÀu¥ı«×
+//ä¸­åºè½‰å¾Œåºçš„å †ç–Šé‹ç®—å­å„ªå…ˆåº¦
 int operatorPriorityInStack(char c)
 {
 	if (c == '+' || c == '-')return 1;
@@ -403,7 +403,7 @@ int operatorPriorityInStack(char c)
 	else return -1;
 }
 
-//¦^¶Ç¬O§_¬°¹Bºâ¤l
+//å›å‚³æ˜¯å¦ç‚ºé‹ç®—å­
 bool isOperator(char c)
 {
 	if (c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')' || c == '^' || c == '!')
@@ -412,7 +412,7 @@ bool isOperator(char c)
 		return false;
 }
 
-//§PÂ_¨â¹Bºâ¤l¬O§_Àu¥ı
+//åˆ¤æ–·å…©é‹ç®—å­æ˜¯å¦å„ªå…ˆ
 bool ispriority(char input, char stack)
 {
 	if (operatorPriorityInInput(input) > operatorPriorityInStack(stack))
@@ -423,10 +423,10 @@ bool ispriority(char input, char stack)
 		return false;
 }
 
-//¤¤§ÇÂà«á§Ç
+//ä¸­åºè½‰å¾Œåº
 std::string Postorder(std::string inorder)
 {
-	//¥h°£¦h¾lªºªÅ¥ÕÁä
+	//å»é™¤å¤šé¤˜çš„ç©ºç™½éµ
 	for (int i = 0; i < (int)inorder.length(); i++)
 	{
 		if (inorder[i] == ' ')
@@ -435,13 +435,13 @@ std::string Postorder(std::string inorder)
 			i--;
 		}
 	}
-	std::string stack;	//°ïÅ|¹Bºâ¤l
-	std::string ans;		//«á§Çªí¥Üªk
-	bool isBlank = false;	//Àx¦s¬O§_¤w¸g¿é¥X¤À¹j²Å¸¹¥Î
+	std::string stack;	//å †ç–Šé‹ç®—å­
+	std::string ans;		//å¾Œåºè¡¨ç¤ºæ³•
+	bool isBlank = false;	//å„²å­˜æ˜¯å¦å·²ç¶“è¼¸å‡ºåˆ†éš”ç¬¦è™Ÿç”¨
 
 	for (int i = 0; i < (int)inorder.length(); i++)
 	{
-		//¹J¨ì¯S§O«ü¥O¡A¥ş³¡ª½±µ¿é¥Xª½¦Ü¬A¸¹¬°¤î
+		//é‡åˆ°ç‰¹åˆ¥æŒ‡ä»¤ï¼Œå…¨éƒ¨ç›´æ¥è¼¸å‡ºç›´è‡³æ‹¬è™Ÿç‚ºæ­¢
 		if (inorder[i] == '\\')
 		{
 			bool isbrackets = false;
@@ -461,45 +461,45 @@ std::string Postorder(std::string inorder)
 			}
 			ans += " ";
 		}
-		//¦pªG¬O¹Bºâ¤l...
+		//å¦‚æœæ˜¯é‹ç®—å­...
 		if (isOperator(inorder[i]))
 		{
-			isBlank = false;	//­«³]¤À¹j²Å¸¹
+			isBlank = false;	//é‡è¨­åˆ†éš”ç¬¦è™Ÿ
 
-			//§P§O¬O¥¿­t¸¹ÁÙ¬O¥[´î
+			//åˆ¤åˆ¥æ˜¯æ­£è² è™Ÿé‚„æ˜¯åŠ æ¸›
 			if (inorder[i] == '-' || inorder[i] == '+')
 			{
 				if (i == 0 || (isOperator(inorder[i - 1]) && inorder[i - 1] != ')'&&inorder[i - 1] != '!'))
 				{
-					if (inorder[i] == '-')	//¦pªG¬O­t¸¹´N©ñ¤J@¥N´À¡A¥¿¸¹ª½±µµLµø
+					if (inorder[i] == '-')	//å¦‚æœæ˜¯è² è™Ÿå°±æ”¾å…¥@ä»£æ›¿ï¼Œæ­£è™Ÿç›´æ¥ç„¡è¦–
 						stack.push_back('@');
 					continue;
 				}
 			}
-			//­Y¹Bºâ¤l°ïÅ|¬°ªÅ¡A«hpush
+			//è‹¥é‹ç®—å­å †ç–Šç‚ºç©ºï¼Œå‰‡push
 			if (stack.size() == 0)
 			{
 				stack.push_back(inorder[i]);
 			}
-			//­Y¹J¨ì«á¬A¸¹»İ¯S§O³B²z
+			//è‹¥é‡åˆ°å¾Œæ‹¬è™Ÿéœ€ç‰¹åˆ¥è™•ç†
 			else if (inorder[i] == ')')
 			{
-				//ª½¨ì«e¬A¸¹¥X²{«e¡A§â°ïÅ|³£pop¥X¨Ó
+				//ç›´åˆ°å‰æ‹¬è™Ÿå‡ºç¾å‰ï¼ŒæŠŠå †ç–Šéƒ½popå‡ºä¾†
 				while (!(stack.back() == '('))
 				{
 					ans += stack.back();
 					ans += " ";
 					stack.pop_back();
 				}
-				//¬A¸¹¤£¥Î¿é¥X¡A¯Âpop
+				//æ‹¬è™Ÿä¸ç”¨è¼¸å‡ºï¼Œç´”pop
 				stack.pop_back();
 			}
-			//­Y¬OÀu¥ı«×¤j©ó°ïÅ|¤¤ªº¹Bºâ¤l¡A«hpush¶i¥h
+			//è‹¥æ˜¯å„ªå…ˆåº¦å¤§æ–¼å †ç–Šä¸­çš„é‹ç®—å­ï¼Œå‰‡pushé€²å»
 			else if (ispriority(inorder[i], stack.back()))
 			{
 				stack.push_back(inorder[i]);
 			}
-			//­Y¬O¬Ò¤£²Å¦X¡A«h±N¹Bºâ¤lpop¥X¤@¦ì¡Aª½¨ì¿é¤J¹Bºâ¤lÀu¥ı«×¤j©ó°ïÅ|
+			//è‹¥æ˜¯çš†ä¸ç¬¦åˆï¼Œå‰‡å°‡é‹ç®—å­popå‡ºä¸€ä½ï¼Œç›´åˆ°è¼¸å…¥é‹ç®—å­å„ªå…ˆåº¦å¤§æ–¼å †ç–Š
 			else
 			{
 				if (stack.back() != '('&&stack.back() != ')')
@@ -511,10 +511,10 @@ std::string Postorder(std::string inorder)
 				i--;
 			}
 		}
-		//¦pªG¬O¹Bºâ¤¸¡Aª½±µ¿é¥X
+		//å¦‚æœæ˜¯é‹ç®—å…ƒï¼Œç›´æ¥è¼¸å‡º
 		else
 		{
-			//¦pªGÁÙ¬O¦P¤@­Ó¹Bºâ¤¸¡A¥ı§âªÅ¥ÕÁä®³±¼
+			//å¦‚æœé‚„æ˜¯åŒä¸€å€‹é‹ç®—å…ƒï¼Œå…ˆæŠŠç©ºç™½éµæ‹¿æ‰
 			if (isBlank)
 				ans.pop_back();
 			ans += inorder[i];
@@ -522,7 +522,7 @@ std::string Postorder(std::string inorder)
 			isBlank = true;
 		}
 	}
-	//·í¿é¤Jµ²§ô¡A±N°ïÅ|¤¤ªº¹Bºâ¤l¥şpop¥X¨Ó
+	//ç•¶è¼¸å…¥çµæŸï¼Œå°‡å †ç–Šä¸­çš„é‹ç®—å­å…¨popå‡ºä¾†
 	for (; !stack.empty();)
 	{
 		if (stack.back() != '('&&stack.back() != ')')
@@ -532,7 +532,7 @@ std::string Postorder(std::string inorder)
 		}
 		stack.pop_back();
 	}
-	//³Ì«á¦pªG¨S¦³ªÅ¥ÕÁä¡A¸É¤W
+	//æœ€å¾Œå¦‚æœæ²’æœ‰ç©ºç™½éµï¼Œè£œä¸Š
 	if (ans[(int)ans.length() - 1] != ' ')
 		ans += ' ';
 	return ans;
